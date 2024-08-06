@@ -16,13 +16,13 @@ jobs:
       matrix:
         include:
           - os: ubuntu-latest
-            asset_name: cft_linux
+            asset_name: cft_linux_x86_64
           - os: windows-latest
-            asset_name: cft_windows.exe
+            asset_name: cft_windows_x86_64.exe
           - os: macos-13
             asset_name: cft_macos_x86_64
           - os: macos-latest
-            asset_name: cft_macos_aarch64
+            asset_name: cft_macos_arm64
 
     steps:
       - uses: actions/checkout@v4

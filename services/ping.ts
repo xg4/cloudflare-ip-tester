@@ -1,4 +1,4 @@
-import { compact, groupBy, map, } from "npm:lodash-es";
+import { compact, groupBy, map } from "npm:lodash-es";
 import ping from "npm:ping";
 
 export interface PingResult {

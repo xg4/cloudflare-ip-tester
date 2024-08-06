@@ -1,9 +1,9 @@
 import { format } from "@std/datetime/format";
 import { join } from "@std/path/join";
 import os from "node:os";
-import ms from 'npm:ms';
-import ora from 'npm:ora';
-import { table } from 'npm:table';
+import ms from "npm:ms";
+import ora from "npm:ora";
+import { table } from "npm:table";
 import { getCloudflareIps, testHosts } from "./services/ip.ts";
 import { getBestIps, readTodayData } from "./utils/file.ts";
 
