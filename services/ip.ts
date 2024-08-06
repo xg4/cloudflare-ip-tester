@@ -1,10 +1,9 @@
 import ms from "npm:ms";
-import ora from "npm:ora";
 import pLimit from "npm:p-limit";
+import { args } from "../main.ts";
 import { getSubnetIps } from "../utils/network.ts";
+import { spinner } from "../utils/spinner.ts";
 import { calculateBestIps, pingHost, type PingResult } from "./ping.ts";
-
-const limit = pLimit(500);
 
 export async function getCloudflareIps(previousData: PingResult[]) {
   const list = calculateBestIps(previousData);
@@ -12,7 +11,6 @@ export async function getCloudflareIps(previousData: PingResult[]) {
     return list.map((i) => i.host);
   }
 
-  console.time("fetching");
   const response = await fetch("https://www.cloudflare.com/ips-v4");
   const data = await response.text();
   const ipRanges = data.trim().split("\n");
@@ -20,16 +18,15 @@ export async function getCloudflareIps(previousData: PingResult[]) {
     .map(getSubnetIps)
     .flat()
     .filter((ip) => ip.endsWith(".0"));
-  console.timeEnd("fetching");
+  spinner.succeed("Fetched cloudflare ips");
   return hosts;
 }
 
 export async function testHosts(hosts: string[]) {
+  const limit = pLimit(parseInt(args.c) || 500);
   let index = 0;
-  const spinner = ora({
-    text: `Testing ${index++}/${hosts.length}`,
-    discardStdin: false,
-  }).start();
+  spinner.start();
+  spinner.text = `Testing ${index++}/${hosts.length}`;
   const now = performance.now();
   const results = await Promise.all(
     hosts.map((host) =>
