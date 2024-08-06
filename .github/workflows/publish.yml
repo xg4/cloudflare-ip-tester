@@ -1,16 +1,13 @@
-name: Build Binaries
+name: Publish Binaries
 
 on:
   push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+    tags:
+      - "*"
 
 jobs:
-  compile:
-    name: Build binaries for ${{ matrix.os }}
+  publish:
+    name: Publish binaries for ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -35,8 +32,10 @@ jobs:
       - name: Compile to binary
         run: deno compile --output=${{ matrix.asset_name }} --allow-all main.ts
 
-      - name: Upload binaries
-        uses: actions/upload-artifact@v4
+      - name: Upload binaries to release
+        uses: svenstaro/upload-release-action@v2
         with:
-          name: ${{ matrix.asset_name }}
-          path: ${{ matrix.asset_name }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: ${{ matrix.asset_name }}
+          asset_name: ${{ matrix.asset_name }}
+          tag: ${{ github.ref }}

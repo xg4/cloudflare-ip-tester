@@ -2,7 +2,7 @@ import ms from "npm:ms";
 import ora from "npm:ora";
 import pLimit from "npm:p-limit";
 import { getSubnetIps } from "../utils/network.ts";
-import { calculateBestIps, pingHost, PingResult } from "./ping.ts";
+import { calculateBestIps, pingHost, type PingResult } from "./ping.ts";
 
 const limit = pLimit(500);
 
