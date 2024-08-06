@@ -12,7 +12,8 @@
       "npm:ora": "npm:ora@8.0.1",
       "npm:p-limit": "npm:p-limit@6.1.0",
       "npm:ping": "npm:ping@0.4.4",
-      "npm:table": "npm:table@6.8.2"
+      "npm:table": "npm:table@6.8.2",
+      "npm:zod": "npm:zod@3.23.8"
     },
     "jsr": {
       "@std/cli@1.0.3": {
@@ -245,6 +246,10 @@
       },
       "yocto-queue@1.1.1": {
         "integrity": "sha512-b4JR1PFR10y1mKjhHY9LaGo6tmrgjit7hxVIeAmyMw3jegXR4dhYqLaQF5zMXZxY7tLpMyJeLjr1C4rLmkVe8g==",
+        "dependencies": {}
+      },
+      "zod@3.23.8": {
+        "integrity": "sha512-XBx9AXhXktjUqnepgTiE5flcKIYWi/rme0Eaj+5Y0lftuGBq+jyRu/md4WnuxqgP1ubdpNCsYEYPxrzVHD8d6g==",
         "dependencies": {}
       }
     }

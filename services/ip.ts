@@ -23,7 +23,7 @@ export async function getCloudflareIps(previousData: PingResult[]) {
 }
 
 export async function testHosts(hosts: string[]) {
-  const limit = pLimit(parseInt(args.c) || 500);
+  const limit = pLimit(args.c);
   let index = 0;
   spinner.start();
   spinner.text = `Testing ${index++}/${hosts.length}`;
