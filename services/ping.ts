@@ -1,4 +1,5 @@
-import { compact, groupBy, map, ping } from "../deps.ts";
+import { compact, groupBy, map, } from "npm:lodash-es";
+import ping from "npm:ping";
 
 export interface PingResult {
   host: string;
@@ -7,8 +8,8 @@ export interface PingResult {
 
 export interface HostStats {
   host: string;
-  averageTime: string;
-  standardDeviation: string;
+  averageTime: number;
+  standardDeviation: number;
   totalPings: number;
   successfulPings: number;
   lossRate: number;
@@ -58,8 +59,8 @@ export function calculateBestIps(data: PingResult[]): HostStats[] {
       host,
       totalPings: times.length,
       successfulPings: validTimes.length,
-      averageTime: mean.toFixed(1),
-      standardDeviation: std.toFixed(1),
+      averageTime: mean,
+      standardDeviation: std,
       lossRate,
     };
   });

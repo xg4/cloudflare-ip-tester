@@ -1,4 +1,4 @@
-import { ip } from "../deps.ts";
+import ip from "npm:ip";
 
 export function getSubnetIps(cidr: string): string[] {
   const subnet = ip.cidrSubnet(cidr);

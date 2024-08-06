@@ -1,4 +1,6 @@
-import { ms, ora, pLimit } from "../deps.ts";
+import ms from "npm:ms";
+import ora from "npm:ora";
+import pLimit from "npm:p-limit";
 import { getSubnetIps } from "../utils/network.ts";
 import { calculateBestIps, pingHost, PingResult } from "./ping.ts";
 
