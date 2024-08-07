@@ -3,7 +3,13 @@ import pLimit from "npm:p-limit";
 import { args } from "../main.ts";
 import { getSubnetIps } from "../utils/network.ts";
 import { spinner } from "../utils/spinner.ts";
-import { calculateBestIps, pingHost, type PingResult } from "./ping.ts";
+import {
+  calculateBestIps,
+  fetchHost,
+  pingHost,
+  type PingResult,
+  ProbeType,
+} from "./ping.ts";
 
 export async function getCloudflareIps(previousData: PingResult[]) {
   const list = calculateBestIps(previousData);
@@ -31,7 +37,8 @@ export async function testHosts(hosts: string[]) {
   const results = await Promise.all(
     hosts.map((host) =>
       limit(async () => {
-        const result = await pingHost(host);
+        const result =
+          await (args.t === ProbeType[0] ? pingHost(host) : fetchHost(host));
         spinner.text = `Testing ${index++}/${hosts.length}`;
         return result;
       })
