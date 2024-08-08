@@ -1,13 +1,14 @@
-import { parseArgs } from "@std/cli";
-import { format } from "@std/datetime";
-import { ensureFile } from "@std/fs";
-import { join, resolve } from "@std/path";
+import { parseArgs } from "jsr:@std/cli";
+import { format } from "jsr:@std/datetime";
+import { ensureFile } from "jsr:@std/fs";
+import { join, resolve } from "jsr:@std/path";
 import os from "node:os";
 import ms from "npm:ms";
 import { table } from "npm:table";
+import which from "npm:which";
 import { z } from "npm:zod";
 import { getCloudflareIps, testHosts } from "./services/ip.ts";
-import { probeType } from "./services/ping.ts";
+import { probeType } from "./types.ts";
 import { getBestIps, readTodayData } from "./utils/file.ts";
 import { spinner } from "./utils/spinner.ts";
 
@@ -22,15 +23,19 @@ const ArgsSchema = z.object({
 
 export const args = ArgsSchema.parse(parseArgs(Deno.args));
 
-const tempDir = os.tmpdir();
-const today = format(new Date(), "yyyy-MM-dd");
-
-export const dbFilePath = join(tempDir, `${args.t}-${today}`);
-
 async function main() {
-  console.log(dbFilePath);
   const startTime = performance.now();
   spinner.start();
+  try {
+    await which("ping");
+  } catch {
+    args.t = probeType.enum.fetch;
+  }
+  const tempDir = os.tmpdir();
+  const today = format(new Date(), "yyyy-MM-dd");
+
+  const dbFilePath = join(tempDir, `${args.t}-${today}`);
+  spinner.succeed(`File path: ${dbFilePath}`);
 
   const previousData = args.f ? [] : await readTodayData(dbFilePath);
 

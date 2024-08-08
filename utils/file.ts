@@ -1,9 +1,6 @@
 import { orderBy } from "npm:lodash-es";
-import {
-  calculateBestIps,
-  type HostStats,
-  type PingResult,
-} from "../services/ping.ts";
+import { calculateBestIps } from "../services/ping.ts";
+import { HostStats, PingResult } from "../types.ts";
 
 export async function readTodayData(dbFilePath: string): Promise<PingResult[]> {
   try {

@@ -1,26 +1,8 @@
 import { compact, groupBy, map } from "npm:lodash-es";
 import ping from "npm:ping";
-import { z } from "npm:zod";
 import { args } from "../main.ts";
+import { HostStats, PingResult, probeType } from "../types.ts";
 import { fetchWithTimeout } from "../utils/request.ts";
-
-export const probeType = z.enum(["ping", "fetch"]);
-
-export interface PingResult {
-  host: string;
-  time: number;
-  colo?: string;
-}
-
-export interface HostStats {
-  host: string;
-  averageTime: number;
-  standardDeviation: number;
-  totalPings: number;
-  successfulPings: number;
-  lossRate: number;
-  colo?: string;
-}
 
 export async function fetchHost(host: string): Promise<PingResult> {
   try {
