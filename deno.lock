@@ -4,6 +4,7 @@
     "specifiers": {
       "jsr:@std/cli@^1.0.3": "jsr:@std/cli@1.0.3",
       "jsr:@std/datetime@^0.224.4": "jsr:@std/datetime@0.224.4",
+      "jsr:@std/fs@^1.0.1": "jsr:@std/fs@1.0.1",
       "jsr:@std/path@^1.0.2": "jsr:@std/path@1.0.2",
       "npm:@types/node": "npm:@types/node@18.16.19",
       "npm:ip": "npm:ip@2.0.1",
@@ -21,6 +22,12 @@
       },
       "@std/datetime@0.224.4": {
         "integrity": "d8f4d9efbb38dd9f8d515e4eed36737ec097311aaf6c1b4163d7a734095542dc"
+      },
+      "@std/fs@1.0.1": {
+        "integrity": "d6914ca2c21abe591f733b31dbe6331e446815e513e2451b3b9e472daddfefcb",
+        "dependencies": [
+          "jsr:@std/path@^1.0.2"
+        ]
       },
       "@std/path@1.0.2": {
         "integrity": "a452174603f8c620bd278a380c596437a9eef50c891c64b85812f735245d9ec7"
@@ -259,6 +266,7 @@
     "dependencies": [
       "jsr:@std/cli@^1.0.3",
       "jsr:@std/datetime@^0.224.4",
+      "jsr:@std/fs@^1.0.1",
       "jsr:@std/path@^1.0.2"
     ]
   }

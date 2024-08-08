@@ -1,12 +1,13 @@
-import { parseArgs } from "@std/cli/parse-args";
-import { format } from "@std/datetime/format";
-import { join } from "@std/path/join";
+import { parseArgs } from "@std/cli";
+import { format } from "@std/datetime";
+import { ensureFile } from "@std/fs";
+import { join, resolve } from "@std/path";
 import os from "node:os";
 import ms from "npm:ms";
 import { table } from "npm:table";
 import { z } from "npm:zod";
 import { getCloudflareIps, testHosts } from "./services/ip.ts";
-import { ProbeType } from "./services/ping.ts";
+import { probeType } from "./services/ping.ts";
 import { getBestIps, readTodayData } from "./utils/file.ts";
 import { spinner } from "./utils/spinner.ts";
 
@@ -15,7 +16,8 @@ const ArgsSchema = z.object({
   n: z.coerce.number().min(0).max(100).catch(10),
   c: z.coerce.number().min(0).max(500).catch(200),
   k: z.coerce.string().optional(),
-  t: z.string().catch(ProbeType[0]),
+  t: probeType.catch(probeType.Enum.ping),
+  o: z.string().optional().catch(""),
 });
 
 export const args = ArgsSchema.parse(parseArgs(Deno.args));
@@ -41,7 +43,18 @@ async function main() {
   ]);
   console.log(table(tableData));
 
+  if (args.o) {
+    const outputPath = resolve(Deno.cwd(), args.o);
+    await ensureFile(outputPath);
+    await Deno.writeTextFile(
+      outputPath,
+      table(tableData, {
+        drawHorizontalLine: () => false,
+        drawVerticalLine: () => false,
+      }),
+    );
+  }
+
   spinner.succeed(`Finished in ${ms(performance.now() - startTime)}`);
 }
-
 main().catch(console.error);

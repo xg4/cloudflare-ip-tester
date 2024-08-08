@@ -1,12 +1,11 @@
 import { compact, groupBy, map } from "npm:lodash-es";
 import ping from "npm:ping";
+import { z } from "npm:zod";
 import { args } from "../main.ts";
 import { fetchWithTimeout } from "../utils/request.ts";
 
-export enum ProbeType {
-  ping,
-  fetch,
-}
+export const probeType = z.enum(["ping", "fetch"]);
+
 export interface PingResult {
   host: string;
   time: number;
@@ -68,27 +67,27 @@ export function calculateBestIps(data: PingResult[]): HostStats[] {
   const list = map(grouped, (items: HostStats[], host: string) => {
     const times: number[] = map(items, "time");
     const colo: string[] = map(items, "colo").filter(Boolean);
-    if (times.every((i) => i < 0)) {
+    if (times.length > 3 && times.every((i) => i < 0)) {
       return null;
     }
     const validTimes = times.filter((i) => i > 0);
-    if (validTimes.length < 1) {
+    if (times.length > 3 && validTimes.length < 1) {
       return null;
     }
     const lossRate = 1 - validTimes.length / times.length;
-    if (args.t === ProbeType[0] && lossRate > 0.8) {
+    if (times.length > 3 && lossRate > 0.8) {
       return null;
     }
     const mean = validTimes.reduce((acc, val) => acc + val, 0) /
       validTimes.length;
-    if (args.t === ProbeType[0] && mean > 200) {
+    if (args.t === probeType.Enum.ping && mean > 200) {
       return null;
     }
     const sumsq = validTimes.reduce(
       (acc, val) => acc + Math.pow(val - mean, 2),
       0,
     );
-    const std = Math.sqrt(sumsq / validTimes.length);
+    const std = validTimes.length ? Math.sqrt(sumsq / validTimes.length) : 0;
     return {
       host,
       totalPings: times.length,

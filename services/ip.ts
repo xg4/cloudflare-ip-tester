@@ -8,7 +8,7 @@ import {
   fetchHost,
   pingHost,
   type PingResult,
-  ProbeType,
+  probeType,
 } from "./ping.ts";
 
 export async function getCloudflareIps(previousData: PingResult[]) {
@@ -37,8 +37,9 @@ export async function testHosts(hosts: string[]) {
   const results = await Promise.all(
     hosts.map((host) =>
       limit(async () => {
-        const result =
-          await (args.t === ProbeType[0] ? pingHost(host) : fetchHost(host));
+        const result = await (args.t === probeType.Enum.ping
+          ? pingHost(host)
+          : fetchHost(host));
         spinner.text = `Testing ${index++}/${hosts.length}`;
         return result;
       })
