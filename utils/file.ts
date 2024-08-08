@@ -33,7 +33,7 @@ export function getBestIps(data: PingResult[], maxNum = 10, keyword?: string) {
         `${
           (i.lossRate * 100).toFixed(1)
         }% (${i.successfulPings}/${i.totalPings})`,
-        i.colo,
+        i.colo || "unknown",
       ]),
     ];
   }

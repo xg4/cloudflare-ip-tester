@@ -1,7 +1,7 @@
 export function fetchWithTimeout(
     url: URL | Request | string,
     options?: RequestInit,
-    timeout = 1 * 1e3,
+    timeout = 3 * 1e3,
 ) {
     const controller = new AbortController();
     const signal = controller.signal;

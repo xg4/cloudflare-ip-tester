@@ -13,11 +13,11 @@ import { spinner } from "./utils/spinner.ts";
 
 const ArgsSchema = z.object({
   f: z.coerce.boolean().catch(false),
-  n: z.coerce.number().min(0).max(100).catch(10),
+  n: z.coerce.number().min(0).catch(10),
   c: z.coerce.number().min(0).max(500).catch(200),
   k: z.coerce.string().optional(),
   t: probeType.catch(probeType.Enum.ping),
-  o: z.string().optional().catch(""),
+  o: z.coerce.string().optional(),
 });
 
 export const args = ArgsSchema.parse(parseArgs(Deno.args));

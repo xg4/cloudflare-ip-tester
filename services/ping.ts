@@ -78,8 +78,10 @@ export function calculateBestIps(data: PingResult[]): HostStats[] {
     if (times.length > 3 && lossRate > 0.8) {
       return null;
     }
-    const mean = validTimes.reduce((acc, val) => acc + val, 0) /
-      validTimes.length;
+    const mean = validTimes.length
+      ? validTimes.reduce((acc, val) => acc + val, 0) /
+        validTimes.length
+      : 0;
     if (args.t === probeType.Enum.ping && mean > 200) {
       return null;
     }
